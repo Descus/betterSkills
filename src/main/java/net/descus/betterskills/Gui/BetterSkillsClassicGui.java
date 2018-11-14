@@ -55,7 +55,7 @@ public class BetterSkillsClassicGui extends GuiScreen {
             drawTexturedModalRect(6 / scalarWidth,6 / scalarHeight , posX[8], posY[8], elemWidth[8], elemHeight[8]);
         }
         GlStateManager.popMatrix();
-        //Top Line
+        //Top/Bottom Line
         drawTexturedModalRect(0,0, posX[4], posY[4], elemWidth[4], elemHeight[4]);
         drawTexturedModalRect(0, height - elemHeight[6], posX[6], posY[6], elemWidth[6], elemHeight[6]);
         float scalarHoriz =  (((float)width-(float)elemWidth[4]-(float)elemWidth[5]) / (float)elemWidth[0]);
@@ -69,7 +69,7 @@ public class BetterSkillsClassicGui extends GuiScreen {
 
         drawTexturedModalRect(width-elemWidth[5],0, posX[5], posY[5], elemWidth[5], elemHeight[5]);
         drawTexturedModalRect(width-elemWidth[7], height - elemHeight[7], posX[7], posY[7], elemWidth[7], elemHeight[7]);
-        //Left Line
+        //Left/Right Line
         float scalarVert = ((float)height-(float)elemHeight[4]-(float)elemHeight[6]) / (float)elemHeight[2];
         GlStateManager.pushMatrix();
         {
