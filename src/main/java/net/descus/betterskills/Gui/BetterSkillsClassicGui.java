@@ -1,12 +1,15 @@
 package net.descus.betterskills.Gui;
 
+import net.descus.betterskills.Gui.Contextmenu.ContextButton;
 import net.descus.betterskills.Handlers.ConfigHandler;
+import net.descus.betterskills.SkillTreeElements.Perk;
 import net.descus.betterskills.SkillTreeElements.SkillTreeElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.Sys;
 
 
 import javax.imageio.ImageIO;
@@ -41,6 +44,16 @@ public class BetterSkillsClassicGui extends GuiScreen {
         }
     }
 
+    @Override
+    public void initGui() {
+        buttonList.add(new ContextButton("Test", 1, 10, 30, 0, 0) {
+            @Override
+            public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
+                return false;
+            }
+        });
+        super.initGui();
+    }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -55,6 +68,10 @@ public class BetterSkillsClassicGui extends GuiScreen {
             drawTexturedModalRect(6 / scalarWidth,6 / scalarHeight , posX[8], posY[8], elemWidth[8], elemHeight[8]);
         }
         GlStateManager.popMatrix();
+
+
+        drawSkillTreeElements();
+        Minecraft.getMinecraft().renderEngine.bindTexture(guiElems);
         //Top/Bottom Line
         drawTexturedModalRect(0,0, posX[4], posY[4], elemWidth[4], elemHeight[4]);
         drawTexturedModalRect(0, height - elemHeight[6], posX[6], posY[6], elemWidth[6], elemHeight[6]);
@@ -78,7 +95,8 @@ public class BetterSkillsClassicGui extends GuiScreen {
             drawTexturedModalRect(width-elemWidth[3], elemHeight[5] / scalarVert, posX[3], posY[3], elemWidth[3], elemHeight[3]);
         }
         GlStateManager.popMatrix();
-        drawSkillTreeElements();
+
+
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -90,11 +108,19 @@ public class BetterSkillsClassicGui extends GuiScreen {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         if(mouseButton == 1) {
-           skillTreeElements.add(new SkillTreeElement(mouseX, mouseY));
-
+            SkillTreeElement ins = new Perk(mouseX, mouseY);
+            if(!ins.isInList((ArrayList<SkillTreeElement>) skillTreeElements)) {
+                skillTreeElements.add(ins);
+            }
+        }
+        if (mouseButton == 0){
+            for(SkillTreeElement e : skillTreeElements){
+                e.onClicked(mouseX, mouseY);
+            }
         }
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }
+
 
     private void drawSkillTreeElements(){
         for(SkillTreeElement se : skillTreeElements){

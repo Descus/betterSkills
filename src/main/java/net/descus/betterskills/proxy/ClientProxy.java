@@ -1,7 +1,6 @@
 package net.descus.betterskills.proxy;
 
 import net.descus.betterskills.BetterSkills;
-import net.descus.betterskills.Gui.BetterSkillsClassicGui;
 import net.descus.betterskills.util.CustomSpriteLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -21,6 +20,7 @@ public class ClientProxy implements IProxy {
 
     public static List<KeyBinding> keyBind;
     public static boolean useKeybind;
+
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {

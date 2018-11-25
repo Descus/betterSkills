@@ -1,15 +1,16 @@
 package net.descus.betterskills.SkillTreeElements;
 
-import net.descus.betterskills.BetterSkills;
 import net.descus.betterskills.util.CustomSpriteLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.util.ArrayList;
 
-public class SkillTreeElement extends GuiScreen implements IMovable{
+public abstract class SkillTreeElement extends GuiScreen implements IMovable{
     int id;
     int width;
     int height;
@@ -20,7 +21,7 @@ public class SkillTreeElement extends GuiScreen implements IMovable{
     protected float posY;
     protected float centerX = posX + width/2F;
     protected float centerY = posY + height/2F;
-    float zLevel;
+
     boolean pausing = false;
 
     CustomSpriteLoader.CustomSprite sprite;
@@ -28,18 +29,37 @@ public class SkillTreeElement extends GuiScreen implements IMovable{
     private boolean isVisible;
     private boolean isActive;
 
+    static float zLevel = 1F;
+    static int lastId = 0;
 
     public SkillTreeElement(int posX, int posY) {
         super();
+        id = lastId++;
         this.posX = posX;
         this.posY = posY;
         setSprite(CustomSpriteLoader.spriteList.get(0));
+        width = sprite.getWidth();
+        height = sprite.getHeight();
     }
 
     public void draw(){
-        BetterSkills.printMessage("Drawn");
+        updateZLevel();
+        float spriteFacX = sprite.getHeight()/256F;
+        float spriteFacY = sprite.getWidth()/256F;
+        GlStateManager.pushMatrix();
         Minecraft.getMinecraft().renderEngine.bindTexture(sprite.getLocation());
-        drawTexturedModalRect(posX, posY, sprite.getX(), sprite.getY(), sprite.getHeight(), sprite.getHeight());
+        GlStateManager.scale((spriteFacX) * zLevel, (spriteFacY) * zLevel, 1);
+        drawTexturedModalRect(posX * 1/spriteFacX, posY * 1/spriteFacY, sprite.getX(), sprite.getY(), 256, 256);
+        GlStateManager.popMatrix();
+    }
+
+    private static void updateZLevel(){
+        int wheel = Integer.signum(Mouse.getDWheel());
+        if(wheel > 0){
+            if(zLevel < 4) zLevel *= 2;
+        } else if(wheel < 0 ){
+            if(zLevel > 0.5) zLevel /= 2;
+        }
     }
 
     public SkillTreeElement getById(int id){
@@ -59,6 +79,25 @@ public class SkillTreeElement extends GuiScreen implements IMovable{
         this.sprite = sprite;
     }
 
+    private boolean isMouseOnElement(int mouseX, int mouseY){
+        float startPosX = posX;
+        float startPosY = posY;
+        float endPosX = (posX + width);
+        float endPosY = (posY + height);
+
+        if(mouseX >= startPosX * zLevel && mouseX <= endPosX * zLevel && mouseY >= startPosY * zLevel &&  mouseY <= endPosY * zLevel){
+            return true;
+        }
+        return false;
+    }
+
+    public void onClicked(int mouseX ,int mouseY){
+        if(isMouseOnElement(mouseX, mouseY)){
+            performAction();
+        }
+    }
+
+    protected abstract void performAction();
 
 
     public void drawLine(SkillTreeElement elem, float width, Color color)
@@ -78,6 +117,17 @@ public class SkillTreeElement extends GuiScreen implements IMovable{
         GlStateManager.color(1F, 1F, 1F, 1F);
 
         GlStateManager.popMatrix();
+    }
+
+    public boolean isInList(ArrayList<SkillTreeElement> list){
+        if(!list.isEmpty()){
+            for (SkillTreeElement e : list) {
+                if(e.posY == posY && e.posX == posX){
+                  return true;
+                }
+            }
+        }
+        return false;
     }
 
 

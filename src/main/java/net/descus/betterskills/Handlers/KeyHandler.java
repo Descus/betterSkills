@@ -1,7 +1,9 @@
 package net.descus.betterskills.Handlers;
 
+import net.descus.betterskills.BetterSkills;
 import net.descus.betterskills.Gui.BetterSkillsClassicGui;
 import net.descus.betterskills.proxy.ClientProxy;
+import net.descus.betterskills.proxy.ServerProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;

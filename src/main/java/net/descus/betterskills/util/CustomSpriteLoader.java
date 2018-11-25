@@ -62,6 +62,8 @@ public class CustomSpriteLoader {
             this.location = location;
             this.width = width;
             this.height = height;
+            System.out.println(width);
+            System.out.println(height);
         }
 
         public ResourceLocation getLocation() {

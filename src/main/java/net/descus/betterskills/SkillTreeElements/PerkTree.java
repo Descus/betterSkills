@@ -10,4 +10,9 @@ public class PerkTree extends SkillTreeElement {
     public PerkTree(int posX, int posY) {
         super(posX, posY);
     }
+
+    @Override
+    protected void performAction() {
+
+    }
 }

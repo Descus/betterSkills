@@ -62,7 +62,10 @@ public class Perk extends SkillTreeElement{
         canBeSkilled = b;
     }
 
+    @Override
+    protected void performAction() {
 
+    }
 
     private boolean isSkilled(){
         return isSkilled;

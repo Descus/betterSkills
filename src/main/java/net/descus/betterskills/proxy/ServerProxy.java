@@ -1,5 +1,6 @@
 package net.descus.betterskills.proxy;
 
+import net.descus.betterskills.Gui.BetterSkillsClassicGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -8,6 +9,8 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class ServerProxy implements IProxy {
+
+
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
